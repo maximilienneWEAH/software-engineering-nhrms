@@ -1,65 +1,92 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
+  const [role, setRole] = useState("patient");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = () => {
+    const passwords: Record<string, string> = {
+      patient: "1234",
+      doctor: "doctor123",
+      nurse: "nurse123",
+      lab: "lab123",
+    };
+
+    if (password !== passwords[role]) {
+      setError("Wrong password");
+      return;
+    }
+
+    router.push(`/dashboard/${role}`);
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <div className="min-h-screen flex flex-col md:flex-row">
+
+      {/* IMAGE SIDE (FIXED + RESPONSIVE) */}
+      <div className="relative w-full md:w-1/2 h-64 md:h-screen">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
+          src="https://images.unsplash.com/photo-1551190822-a9333d879b1f"
+          alt="Healthcare professionals"
+          fill
+          className="object-cover"
           priority
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+      </div>
+
+      {/* LOGIN SIDE */}
+      <div className="flex w-full md:w-1/2 items-center justify-center p-6 bg-gray-50">
+
+        <div className="w-full max-w-md bg-white p-6 rounded-xl shadow">
+
+          {/* TITLE (BLUE → DARK GREEN) */}
+          <h1 className="text-2xl font-bold text-green-900 mb-6 text-center">
+            Welcome To NHRMS!!!
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+          {/* ROLE SELECT */}
+          <select
+            className="w-full p-3 mb-3 border rounded text-black focus:outline-none focus:ring-2 focus:ring-green-800"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <option value="patient">Patient</option>
+            <option value="doctor">Doctor</option>
+            <option value="nurse">Nurse</option>
+            <option value="lab">Lab Technician</option>
+          </select>
+
+          {/* PASSWORD INPUT */}
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full p-3 mb-3 border rounded focus:outline-none focus:ring-2 focus:ring-green-800 text-black"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          {/* ERROR MESSAGE */}
+          {error && (
+            <p className="text-red-500 text-sm mb-3">{error}</p>
+          )}
+
+          {/* LOGIN BUTTON (BLUE → DARK GREEN) */}
+          <button
+            onClick={handleLogin}
+            className="w-full bg-green-800 text-white p-3 rounded hover:bg-green-900 transition"
           >
-            Documentation
-          </a>
+            Login
+          </button>
+
         </div>
-      </main>
+      </div>
     </div>
   );
 }
