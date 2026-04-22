@@ -1,6 +1,6 @@
-import { Navbar } from "@/components/navbar/page";
-import { Sidebar } from "@/components/sidebar/page";
-import { Card } from "@/components/card/page";
+import { Navbar } from "@/components/navbar";
+import { Sidebar } from "@/components/sidebar";
+import { Card } from "@/components/card";
 
 export default function Dashboard() {
   return (
